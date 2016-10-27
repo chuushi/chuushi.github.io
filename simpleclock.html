@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Time</title>
+<style>
+body {
+background-color:#000;
+color:#ccc;
+font-family:sans-serif;
+
+}
+#timeDiv {
+font-size:100px;
+margin:auto;
+max-width:16em;
+text-align:center;
+padding:1em;
+border: 1px #fff solid;
+border-radius: 1em;
+}
+</style>
+</head>
+<body>
+<div id="timeDiv">
+<p>Today is <span id="time-date"></span>.</p>
+<p>It is currently <span id="time-digital"></span>.</p></div>
+<svg id="time-analog">
+<circle></circle>
+</svg>
+<script>
+(function(){
+
+var dom = {
+    b: document.getElementById("time-digital"),
+    d: document.getElementById("time-date")
+};
+dom.h = document.createElement("span");
+dom.m = document.createElement("span");
+dom.s = document.createElement("span");
+dom.a = document.createElement("span");
+
+dom.b.appendChild(dom.h);
+dom.b.appendChild(document.createTextNode(":"));
+dom.b.appendChild(dom.m);
+dom.b.appendChild(document.createTextNode(":"));
+dom.b.appendChild(dom.s);
+dom.b.appendChild(document.createTextNode(" "));
+dom.b.appendChild(dom.a);
+
+dom.Y = document.createElement("span");
+dom.M = document.createElement("span");
+dom.D = document.createElement("span");
+
+dom.d.appendChild(dom.M);
+dom.d.appendChild(document.createTextNode("/"));
+dom.d.appendChild(dom.D);
+dom.d.appendChild(document.createTextNode("/"));
+dom.d.appendChild(dom.Y);
+
+var h, m, s, a, timeout;
+
+function o(n) {
+    return n < 10 ? "0" + n : n; 
+}
+
+function timeSync() {
+    var d = new Date();
+    
+    a = "pm";
+    h = d.getHours();
+
+    if (h > 12) {
+        h -= 12;
+    } else if (h !== 12) {
+        a = "am";
+        if (h === 0) {
+            h = 12;
+        }
+    }
+
+    m = d.getMinutes();
+    s = d.getSeconds();
+    
+    dom.Y.innerHTML = d.getFullYear();
+    dom.M.innerHTML = o(d.getMonth()+1);
+    dom.D.innerHTML = o(d.getDate());
+    
+    dom.h.innerHTML = o(h);
+    dom.m.innerHTML = o(m);
+    dom.s.innerHTML = o(s);
+    dom.a.innerHTML = a;
+    
+    clearTimeout(timeout);
+    timeout = setTimeout(timeKeeping, 1000 - d.getMilliseconds());
+}
+
+timeSync();
+
+function timeKeeping () {
+    timeout = setTimeout(timeKeeping, 1000);
+    if (++s === 60) {
+        s = 0;
+        if (++m === 60) {
+            m = 0;
+            if (++h === 12) {
+                if (a === "pm") {
+                    // Next day; reset
+                    timeSync();
+                    return;
+                } else {
+                    a = "pm";
+                }
+                dom.a.innerHTML = a;
+            } else if (h === 13) {
+                h = 1
+            }
+            dom.h.innerHTML = o(h);
+        }
+        dom.m.innerHTML = o(m);
+    }
+    dom.s.innerHTML = o(s);
+}
+
+document.addEventListener("visibilitychange",timeSync);
+
+}())/**/
+</script>
+</body>
+</html>
