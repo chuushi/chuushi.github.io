@@ -1,0 +1,19 @@
+body {
+  background-color:#000;
+  color:#fff;
+  font-family:sans-serif;
+}
+
+#io-navbar {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  padding: .5em;
+  border-top-left-radius: .5em;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+}
+
+a:link,a:visited{color:#AAA;}
+a:hover{color:#CCC;}
+a:active{color:#444;}

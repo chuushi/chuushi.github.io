@@ -1,0 +1,118 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="res/css/main.css">
+    <title>Time</title>
+    <style>
+#timeContainer {
+  border-radius: 1em;
+  border: 2px solid #fff;
+  text-align: center;
+  padding: .5em;
+  font-size: 3em;
+}
+    </style>
+  </head>
+  <body>
+    <div id="timeContainer">The time is now <span id="time"></span>.</div>
+    <div id="io-navbar"><a href="/">Home</a> &bull; <a href="//github.com/SimonOrJ/simonorj.github.io/blob/master/clock.html">Source</a></div>
+    <script>
+// Configuration
+const TIME_ID = "time"; // Set this line to the ID of the element that will
+                        //   contain continuously updated time.
+
+// Constants
+const AM = "AM";
+      PM = "PM";
+
+// Start dom object
+const DOM_MAIN = document.getElementById(TIME_ID);
+
+// Create elements
+const DOMH  = DOM_MAIN.appendChild(document.createElement("span"));
+DOM_MAIN.appendChild(document.createTextNode(':'));
+const DOMM  = DOM_MAIN.appendChild(document.createElement("span"));
+DOM_MAIN.appendChild(document.createTextNode(':'));
+const DOMS  = DOM_MAIN.appendChild(document.createElement("span"));
+DOM_MAIN.appendChild(document.createTextNode(' '));
+const DOMAP = DOM_MAIN.appendChild(document.createElement("span"));
+
+// Declare variables
+var d, h, m, s, ap;
+
+// Updating Time
+function updateTime() {
+    // Get date
+    d = new Date();
+    
+    // Sets tick function to tick after this second ends
+    setTimeout(function() {
+        tick();
+        
+        // Tick every second
+        setInterval(tick, 1000);
+    }, 1000 - d.getMilliseconds());
+    
+    // Get time things
+    h = d.getHours();
+    m = d.getMinutes();
+    s = d.getSeconds();
+    
+    if (h > 12) {
+        // Hour is over 12: pm
+        h -= 12;
+        ap = "pm";
+    } else if (h == 0) {
+        // Midnight
+        h = 12;
+        ap = "pm";
+    } else {
+        ap = "am";
+    }
+    
+    DOMAP.innerHTML = ap;
+    DOMH.innerHTML = bi(h);
+    DOMM.innerHTML = bi(m);
+    DOMS.innerHTML = bi(s);
+}
+
+// Tick tock (runs every second)
+function tick() {
+    // This function is super compressed.
+    if (++s >= 60) {
+        s = 0;
+        if (++m >= 60) {
+            m = 0;
+            if (++h >= 12) {
+                if (h === 13) {
+                    h = 1;
+                } else {
+                    if (ap === "am") {
+                        ap = "pm";
+                    } else {
+                        ap = "am";
+                    }
+                    DOMAP.innerHTML = ap;
+                }
+            }
+            DOMH.innerHTML = bi(h);
+        }
+        DOMM.innerHTML = bi(m);
+    }
+    DOMS.innerHTML = bi(s);
+}
+
+// Making sure numbers are in two digits
+function bi(n) {
+    if (n < 10) {
+        return '0' + n;
+    }
+    return n;
+}
+
+updateTime();
+
+    </script>
+  </body>
+</html>
