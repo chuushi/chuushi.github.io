@@ -29,15 +29,16 @@
     </div>
     <div id="io-navbar"><a href="/">Home</a> &bull; <a href="//github.com/SimonOrJ/simonorj.github.io/blob/master/clock.html">Source</a></div>
     <script>
-(function() {
+(function(){
+"use strict";
 
 // Configuration
-const DATE_ID = "date";
-const TIME_ID = "time"; // Set this line to the ID of the element that will
+const DATE_ID = "date",
+      TIME_ID = "time"; // Set this line to the ID of the element that will
                         //   contain continuously updated time.
 
 // Constants
-const AM = "am";
+const AM = "am",
       PM = "pm";
 
 // Start dom object
