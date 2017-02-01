@@ -10,49 +10,62 @@
   border: 2px solid #fff;
   text-align: center;
   padding: .5em;
-  font-size: 3em;
+  font-size: 4em;
+  margin: 0 auto;
+  max-width: 1024px;
+}
+
+@media (max-width: 480px) {
+  #timeContainer{
+    font-size: 2em;
+  }
 }
     </style>
   </head>
   <body>
-    <div id="timeContainer">The time is now <span id="time"></span>.</div>
+    <div id="timeContainer">
+      <p>Today is <span id="date"></span>.</p>
+      <p>The time is now <span id="time"></span>.</p>
+    </div>
     <div id="io-navbar"><a href="/">Home</a> &bull; <a href="//github.com/SimonOrJ/simonorj.github.io/blob/master/clock.html">Source</a></div>
     <script>
+(function() {
+
 // Configuration
+const DATE_ID = "date";
 const TIME_ID = "time"; // Set this line to the ID of the element that will
                         //   contain continuously updated time.
 
 // Constants
-const AM = "AM";
-      PM = "PM";
+const AM = "am";
+      PM = "pm";
 
 // Start dom object
-const DOM_MAIN = document.getElementById(TIME_ID);
+const DOM_TIME = document.getElementById(TIME_ID);
+const DOM_DATE = document.getElementById(DATE_ID);
 
 // Create elements
-const DOMH  = DOM_MAIN.appendChild(document.createElement("span"));
-DOM_MAIN.appendChild(document.createTextNode(':'));
-const DOMM  = DOM_MAIN.appendChild(document.createElement("span"));
-DOM_MAIN.appendChild(document.createTextNode(':'));
-const DOMS  = DOM_MAIN.appendChild(document.createElement("span"));
-DOM_MAIN.appendChild(document.createTextNode(' '));
-const DOMAP = DOM_MAIN.appendChild(document.createElement("span"));
+const DOM_H  = document.createElement("span");
+const DOM_M  = document.createElement("span");
+const DOM_S  = document.createElement("span");
+const DOM_AP = document.createElement("span");
+
+// Append elements
+DOM_TIME.appendChild(DOM_H);
+DOM_TIME.appendChild(document.createTextNode(':'));
+DOM_TIME.appendChild(DOM_M);
+DOM_TIME.appendChild(document.createTextNode(':'));
+DOM_TIME.appendChild(DOM_S);
+DOM_TIME.appendChild(document.createTextNode(' '));
+DOM_TIME.appendChild(DOM_AP);
 
 // Declare variables
 var d, h, m, s, ap;
 
 // Updating Time
-function updateTime() {
+function timeSync() {
     // Get date
     d = new Date();
-    
-    // Sets tick function to tick after this second ends
-    setTimeout(function() {
-        tick();
-        
-        // Tick every second
-        setInterval(tick, 1000);
-    }, 1000 - d.getMilliseconds());
     
     // Get time things
     h = d.getHours();
@@ -66,53 +79,62 @@ function updateTime() {
     } else if (h == 0) {
         // Midnight
         h = 12;
-        ap = "pm";
+        ap = PM;
     } else {
-        ap = "am";
+        ap = AM;
     }
     
-    DOMAP.innerHTML = ap;
-    DOMH.innerHTML = bi(h);
-    DOMM.innerHTML = bi(m);
-    DOMS.innerHTML = bi(s);
+    DOM_DATE.innerHTML = bi(d.getMonth() + 1) + '/' + bi(d.getDate()) + '/' + d.getFullYear();
+    DOM_AP.innerHTML = ap;
+    DOM_H.innerHTML = bi(h);
+    DOM_M.innerHTML = bi(m);
+    DOM_S.innerHTML = bi(s);
 }
 
 // Tick tock (runs every second)
 function tick() {
     // This function is super compressed.
-    if (++s >= 60) {
+    if (++s === 60) {
         s = 0;
-        if (++m >= 60) {
+        if (++m === 60) {
             m = 0;
             if (++h >= 12) {
                 if (h === 13) {
                     h = 1;
                 } else {
-                    if (ap === "am") {
-                        ap = "pm";
+                    if (ap === AM) {
+                        ap = PM;
                     } else {
-                        ap = "am";
+                        timeSync();
+                        return;
                     }
-                    DOMAP.innerHTML = ap;
+                    DOM_AP.innerHTML = ap;
                 }
             }
-            DOMH.innerHTML = bi(h);
+            DOM_H.innerHTML = bi(h);
         }
-        DOMM.innerHTML = bi(m);
+        DOM_M.innerHTML = bi(m);
     }
-    DOMS.innerHTML = bi(s);
+    DOM_S.innerHTML = bi(s);
 }
 
 // Making sure numbers are in two digits
 function bi(n) {
-    if (n < 10) {
-        return '0' + n;
-    }
-    return n;
+    return n < 10 ? "0" + n : n; 
 }
 
-updateTime();
+// Initiate
+timeSync();
 
+// Start the interval timer
+setTimeout(function() {
+    tick();
+    
+    // Tick every second
+    setInterval(tick, 1000);
+}, 1000 - d.getMilliseconds());
+
+}())
     </script>
   </body>
 </html>
