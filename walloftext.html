@@ -1,5 +1,3 @@
-<!doctype html>
-<html>
 <!--
 // Javascript code built with the help of some research through
 // the internet. Website (table) layout and design by SimonOrJ.
@@ -7,66 +5,72 @@
 // credit me. ~SimonOrJ
 // (c) Simon Chuu, 2015-2017
 -->
-<head>
-<meta charset="utf-8">
-<meta name="description" content="An Easy-to-use tool to generate a big wall of text!">
-<meta name="keywords" content="wall of text, spam, random, words, common words">
-<meta name="date" content="2015-05-01T17:30:00+04:00">
-<meta name="viewport" content="initial-scale=1">
-<title>Wall of Text Generator &bull; by SimonOrJ</title>
-<style>
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="An Easy-to-use tool to generate a big wall of text!">
+    <meta name="keywords" content="wall of text, spam, random, words, common words">
+    <meta name="viewport" content="width=device-width; initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="res/css/main.css">
+    <title>Wall of Text Generator &bull; by SimonOrJ</title>
+    <style>
+
 table{
-width:100%;
+  width:100%;
 }
 th{
-text-align:right;
-vertical-align:top;
-width:12em;
+  text-align:right;
+  vertical-align:top;
+  width:12em;
 }
 @media (max-width: 480px) {
-th{
-display:block;
-text-align:left;
-width:100%;
-}
-td{
-display:block;
-}
+  th{
+    display:block;
+    text-align:left;
+    width:100%;
+  }
+  td{
+    display:block;
+  }
 }
 input{
-background-color:rgba(100,144,125,.1);
-border:0;
-font-size:1em;
-width:100%;
-padding:0em;
-margin:0em;
-vertical-align:top;
+  background-color:rgba(100,144,125,.1);
+  border:0;
+  font-size:1em;
+  color: #fff;
+  width:100%;
+  padding:0em;
+  margin:0em;
+  vertical-align:top;
 }
 input[type="submit"] {
-	color:blue;
+  color:blue;
 }
 input[type="submit"]:active {
-	color:red;
+  color:red;
 }
 #wall p{
-	text-indent:3em;
+  text-indent:3em;
 }
-</style>
-</head>
 
-<body onLoad="loading()"><div id="wall"><noscript><h1>Javascript is dead!</h1><small>&larr; <a href="javascript:getForm()">Back one page</a></small><p>This website requires javascript to generate random content every time you refresh this page!  If you cannot enable javascript, here is the sample content.  Would they do say with would well from, will think take in would just would with if a make. Use can year other into my them take then also not if, over use. This like, have when we first, after well its an, work us well work no new, as from, that how an year make know. Be his want these my, with some, two but also give I way make him when when get how she of, two which, with what use he your who on who who and how two these up after see two see I some any this, in two your way in an I want, first out make up there take not even to, which about our but I, his would time even way new like in than, also my up take like. Time two into when not that, make, which any by your well person, will, up want who come give want us now good go I year him there, some on, which you look know or, with at, could person our if other if out them these what year of, only for day but or on see can other, he with then as us not them back over I, in, their, as at out. Then then its, one work him no take this at these know us its way her the so this, time who when your, person you, then two most use would day at him so now day, no not give new any they they than, than this the what be, make day one, not.</p><p>Also will use his come, can so one have work like time do you for, first but at think how over good will one say how what would, use person if way, a him take its out, their, two go back he other by, or there one when think of because by time some by this work like by, we, look one you, get, over give that they of, it. After, what no do say to, can, up they she take, as want or take, us as their two any he work into day, two any. Good into but from him say come but, its than, as go and good say, see most time and time not give then as because that good only, other by, when by about, could your come year. Only even me this or so come, all be some he want after they on one, how his get see get she, but day you of which the your, him see, she, I at, person even two, for day at no or know also. Then in, or if will now this will take now use on into even, their to two also they in these at it be its so some out then only some there make out use who, well also than could an when other get like with now that back if all come can. Be but only some say with these two the an now one could one at his make as of by of these then.</p><p>Any well way to two for out day, will, any when even, new year see its good think our for. He, or an have, well a him will by if it good, look, would be my. Know have there. Just not new like.</p></noscript></div>
-<div id="form" style="display:none"><h1>Fill the form below to generate a wall of text!</h1>
-<form name="MakeWall" action="javascript:makeWall(document.getElementById('webTitle').value, document.getElementById('wallLen').value, document.getElementById('artWriter').value)">
-<table>
-<tr><th><label for="webTitle">Headline:</label></th><td><input type="text" name="webTitle" id="webTitle" placeholder="Optional" value="Improving Your Sentence Structure"></td></tr>
-<tr><th><label for="wallLen">Number of random words:</label></th><td><input type="number" name="wallLen" id="wallLen" placeholder="Required" value="3000" max="2000000" required autofocus></td></tr>
-<tr><th><label for="artWriter">Text Author to display:</label></th><td><input type="text" name="artWriter" id="artWriter" placeholder="Optional"></td></tr>
-<tr><th></th><td><input type="submit" value="Loading..." id="subt" disabled></td></tr>
-</table>
-</form>
-<p id="fmDn"></p></div>
-<p>Wall of Text Generator Version 1.1. <small>Updated May 2, 2015.</small><br>&copy; SimonOrJ, 2015. All Rights Reserved.<br><a href="javascript:scroll(0,0)">Back to Top</a></p>
-<script>
+    </style>
+  </head>
+
+  <body onLoad="loading()"><div id="wall"><noscript><h1>Javascript is dead!</h1><small>&larr; <a href="javascript:getForm()">Back one page</a></small><p>This website requires javascript to generate random content every time you refresh this page!  If you cannot enable javascript, here is the sample content.  Would they do say with would well from, will think take in would just would with if a make. Use can year other into my them take then also not if, over use. This like, have when we first, after well its an, work us well work no new, as from, that how an year make know. Be his want these my, with some, two but also give I way make him when when get how she of, two which, with what use he your who on who who and how two these up after see two see I some any this, in two your way in an I want, first out make up there take not even to, which about our but I, his would time even way new like in than, also my up take like. Time two into when not that, make, which any by your well person, will, up want who come give want us now good go I year him there, some on, which you look know or, with at, could person our if other if out them these what year of, only for day but or on see can other, he with then as us not them back over I, in, their, as at out. Then then its, one work him no take this at these know us its way her the so this, time who when your, person you, then two most use would day at him so now day, no not give new any they they than, than this the what be, make day one, not.</p><p>Also will use his come, can so one have work like time do you for, first but at think how over good will one say how what would, use person if way, a him take its out, their, two go back he other by, or there one when think of because by time some by this work like by, we, look one you, get, over give that they of, it. After, what no do say to, can, up they she take, as want or take, us as their two any he work into day, two any. Good into but from him say come but, its than, as go and good say, see most time and time not give then as because that good only, other by, when by about, could your come year. Only even me this or so come, all be some he want after they on one, how his get see get she, but day you of which the your, him see, she, I at, person even two, for day at no or know also. Then in, or if will now this will take now use on into even, their to two also they in these at it be its so some out then only some there make out use who, well also than could an when other get like with now that back if all come can. Be but only some say with these two the an now one could one at his make as of by of these then.</p><p>Any well way to two for out day, will, any when even, new year see its good think our for. He, or an have, well a him will by if it good, look, would be my. Know have there. Just not new like.</p></noscript></div>
+    <div id="form" style="display:none"><h1>Fill the form below to generate a wall of text!</h1>
+    <form name="MakeWall" action="javascript:makeWall(document.getElementById('webTitle').value, document.getElementById('wallLen').value, document.getElementById('artWriter').value)">
+    <table>
+      <tr><th><label for="webTitle">Headline:</label></th><td><input type="text" name="webTitle" id="webTitle" placeholder="Optional" value="Improving Your Sentence Structure"></td></tr>
+      <tr><th><label for="wallLen">Number of random words:</label></th><td><input type="number" name="wallLen" id="wallLen" placeholder="Required" value="3000" max="2000000" required autofocus></td></tr>
+      <tr><th><label for="artWriter">Text Author to display:</label></th><td><input type="text" name="artWriter" id="artWriter" placeholder="Optional"></td></tr>
+      <tr><th></th><td><input type="submit" value="Loading..." id="subt" disabled></td></tr>
+    </table>
+    </form>
+    <p id="fmDn"></p></div>
+    <p>Wall of Text Generator Version 1.1. <small>Updated May 2, 2015.</small><br>&copy; SimonOrJ, 2015. All Rights Reserved.<br><a href="javascript:scroll(0,0)">Back to Top</a></p>
+    <script>
+
 (function(){
 "use strict";
 
@@ -78,94 +82,95 @@ var words = ["the","be","to","of","and","a","in","that","have","I","it","for","n
 var rffl = 0;
 
 function getForm() {
-	wall.style.display = "none";
-	subt.removeAttribute("disabled");
-	subt.removeAttribute("style")
-	subt.setAttribute("value","Create the wall!")
-	form.removeAttribute("style");
-	document.title = "Wall of Text Generator \u2022 by SimonOrJ";
-	fmdn.innerHTML = "Click on the author's name to reach this form again.  <small>To share, click on the \"Creat the wall!\" button and copy/paste the altered URL.</small>";
-	if(rffl) window.history.replaceState('','','walloftext.html');
-	rffl = 0;
+  wall.style.display = "none";
+  subt.removeAttribute("disabled");
+  subt.removeAttribute("style")
+  subt.setAttribute("value","Create the wall!")
+  form.removeAttribute("style");
+  document.title = "Wall of Text Generator \u2022 by SimonOrJ";
+  fmdn.innerHTML = "Click on the author's name to reach this form again.  <small>To share, click on the \"Creat the wall!\" button and copy/paste the altered URL.</small>";
+  if(rffl) window.history.replaceState('','','walloftext.html');
+  rffl = 0;
 }
 window.getForm = getForm;
 
 function makeWall(wTtl,wLen,aWtr) {
-	subt.disabled = true;
-	subt.setAttribute("value","Generating...");
-	subt.style.fontWeight = "bold";
-	fmdn.innerHTML = "Generation will take some time depending on your device's specs.";
-	setTimeout(function() {
-		var text, GET = "?len="+wLen;
-		if(wTtl) {
-			document.title = wTtl+" \u2022 by SimonOrJ";
-			text = "<h1>"+wTtl+"</h1>";
-			GET += "&head="+encodeURIComponent(wTtl);
-		}
-		else text = "";
-		text += "<small>";
-		if(aWtr) {
-			text += "by";
-			GET += "&wtr="+encodeURIComponent(aWtr);
-		}
-		else {
-			text += "\u2190";
-			aWtr = "Back one page";
-		}
-		text += ' <a href="javascript:getForm()">'+aWtr+"</a></small><p>";
-		var endFlag=1;
-		for( var i=0; i < wLen; i++ ) {
-			var add = words[Math.floor(Math.random() * words.length)];
-			if(endFlag==1) add = add.charAt(0).toUpperCase()+add.slice(1);
-			var n = Math.random()*1000
-			endFlag=0;
-			if(n<150) {
-				if(n<20) {
-					endFlag=1;
-					add += ". ";
-					if(n<3) add += "</p><p>"
-				}
-				else {
-					add += ","
-				}
-			}
-			text += add+" "
-		}
-		text += "</p>"
-	
-		document.getElementById("wall").innerHTML = text;
-		form.style.display = "none";
-		wall.removeAttribute("style");
-		if(!rffl) window.history.replaceState('','',GET);
-		rffl = 1;}, 16)
-	console.log("Generating "+wLen+" words from a selection of "+words.length+" common words. (c) SimonOrJ, 2015")
+  subt.disabled = true;
+  subt.setAttribute("value","Generating...");
+  subt.style.fontWeight = "bold";
+  fmdn.innerHTML = "Generation will take some time depending on your device's specs.";
+  setTimeout(function() {
+    var text, GET = "?len="+wLen;
+    if(wTtl) {
+      document.title = wTtl+" \u2022 by SimonOrJ";
+      text = "<h1>"+wTtl+"</h1>";
+      GET += "&head="+encodeURIComponent(wTtl);
+    }
+    else text = "";
+    text += "<small>";
+    if(aWtr) {
+      text += "by";
+      GET += "&wtr="+encodeURIComponent(aWtr);
+    }
+    else {
+      text += "\u2190";
+      aWtr = "Back one page";
+    }
+    text += ' <a href="javascript:getForm()">'+aWtr+"</a></small><p>";
+    var endFlag=1;
+    for( var i=0; i < wLen; i++ ) {
+      var add = words[Math.floor(Math.random() * words.length)];
+      if(endFlag==1) add = add.charAt(0).toUpperCase()+add.slice(1);
+      var n = Math.random()*1000
+      endFlag=0;
+      if(n<150) {
+        if(n<20) {
+          endFlag=1;
+          add += ". ";
+          if(n<3) add += "</p><p>"
+        }
+        else {
+          add += ","
+        }
+      }
+      text += add+" "
+    }
+    text += "</p>"
+  
+    document.getElementById("wall").innerHTML = text;
+    form.style.display = "none";
+    wall.removeAttribute("style");
+    if(!rffl) window.history.replaceState('','',GET);
+    rffl = 1;}, 16)
+  console.log("Generating "+wLen+" words from a selection of "+words.length+" common words. (c) SimonOrJ, 2015")
 }
 window.makeWall = makeWall;
 
 function loading() {
-	var parms = location.search.substr(1).split("&");
-	if(parms == 0) getForm()
-	else {
-		var tmp, uri = {};
-		for (var i = 0; i < parms.length; i++) {
-			tmp = parms[i].split("=");
-			uri[tmp[0]] = decodeURIComponent(tmp[1]);
-		}
-		if(uri["len"]) {
-			console.log("Pre-generation detected.")
-			wall.innerHTML = "<b>Loading...</b>  Please wait.";
-			wall.removeAttribute("display");
-			makeWall(uri["head"],uri["len"],uri["wtr"]);
-			document.getElementById("wallLen").value = uri["len"];
-			if(uri["head"]) document.getElementById("webTitle").value = uri["head"];
-			else document.getElementById("webTitle").value = "";
-			if(uri["wtr"]) document.getElementById("artWriter").value = uri["wtr"];
-		}
-		else getForm()
-	}
+  var parms = location.search.substr(1).split("&");
+  if(parms == 0) getForm()
+  else {
+    var tmp, uri = {};
+    for (var i = 0; i < parms.length; i++) {
+      tmp = parms[i].split("=");
+      uri[tmp[0]] = decodeURIComponent(tmp[1]);
+    }
+    if(uri["len"]) {
+      console.log("Pre-generation detected.")
+      wall.innerHTML = "<b>Loading...</b>  Please wait.";
+      wall.removeAttribute("display");
+      makeWall(uri["head"],uri["len"],uri["wtr"]);
+      document.getElementById("wallLen").value = uri["len"];
+      if(uri["head"]) document.getElementById("webTitle").value = uri["head"];
+      else document.getElementById("webTitle").value = "";
+      if(uri["wtr"]) document.getElementById("artWriter").value = uri["wtr"];
+    }
+    else getForm()
+  }
 }
 window.loading = loading;
 }())
-</script>
-</body>
+
+    </script>
+  </body>
 </html>
