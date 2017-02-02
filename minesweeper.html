@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="res/css/main.css">
+    <title>Minesweeper &bull; by Simon Chuu</title>
+    <style>
+
+.hidden {
+  display: none;
+}
+
+#g-minefield tr>td {
+  border: 1px solid #eee;
+  width: 1em;
+  height: 1em;
+}
+
+    </style>
+  </head>
+  <body>
+    <h1>Minesweeper</h1>
+    <table id="form">
+      <tr><th><label for="f-width">Width</label></th><td><input id="f-width" type="number" value="10"></td></tr>
+      <tr><th><label for="f-height">Height</label></th><td><input id="f-height" type="number" value="10"></td></tr>
+      <tr><th><label for="f-mines">Mines</label></th><td><input id="f-mines" type="number" value="10"></td></tr>
+      <tr><td colspan="2"><input id="f-submit" type="submit" value="Submit"></td></tr>
+    </table>
+    <div id="game" class="hidden">
+      <table>
+        <tbody id="g-minefield">
+        </tbody>
+      </table>
+      <input id="g-back" type="button" value="Back to form">
+    </div>
+    <script>
+
+(function(){
+"use strict";
+
+const FORM =  document.getElementById("form"),
+    GAME =    document.getElementById("game"),
+    G_TABLE = document.getElementById("g-minefield");
+
+const WIDTH = document.getElementById("f-width"),
+    HEIGHT =  document.getElementById("f-height"),
+    MINES =   document.getElementById("f-mines");
+
+document.getElementById("f-submit").onclick = function(){
+    makeMineField(WIDTH.value, HEIGHT.value, MINES.value);
+    
+    FORM.classList.add("hidden");
+    GAME.classList.remove("hidden");
+};
+
+document.getElementById("g-back").onclick = function(){
+    FORM.classList.remove("hidden");
+    GAME.classList.add("hidden");
+};
+
+function makeMineField(w, h, m) {
+    // Clear the field
+    G_TABLE.innerHTML = "";
+    
+    // Width first
+    const H = document.createElement("tr");
+    for (var i = 0; i < w; i++)
+        H.appendChild(document.createElement("td"));
+    
+    // Height
+    for (var i = 0; i < h; i++)
+        G_TABLE.appendChild(H.cloneNode(true));
+}
+
+
+
+}())
+
+    </script>
+  </body>
+</html>
