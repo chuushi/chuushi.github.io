@@ -11,10 +11,55 @@
   display: none;
 }
 
-#g-minefield tr>td {
-  border: 1px solid #eee;
-  width: 1em;
-  height: 1em;
+#g-main {
+  
+}
+
+#g-minefield tr td {
+  border-style: none;
+  background-color: #c0c0c0;
+  vertical-align: center;
+  text-align: center;
+  font-weight: bold;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+#g-minefield tr .covered {
+  border: .5rem outset #ffffff;
+}
+
+#g-minefield tr .covered:active, #g-minefield tr .covered.active {
+  border-style: inset;
+}
+
+#g-minefield tr .flagged {
+  /* flagged */
+}
+
+#g-minefield tr .n1{
+  color: #0000fc;
+}
+#g-minefield tr .n2{
+  color: #017f01;
+}
+#g-minefield tr .n3{
+  color: #fe0000;
+}
+#g-minefield tr .n4{
+  color: #010080;
+}
+#g-minefield tr .n5{
+  color: #810102;
+}
+#g-minefield tr .n6{
+  color: #008081;
+}
+#g-minefield tr .n7{
+  color: #000000;
+}
+#g-minefield tr .n8{
+  color: #808080;
 }
 
     </style>
@@ -28,7 +73,7 @@
       <tr><td colspan="2"><input id="f-submit" type="submit" value="Submit"></td></tr>
     </table>
     <div id="game" class="hidden">
-      <table>
+      <table id="g-main">
         <tbody id="g-minefield">
         </tbody>
       </table>
@@ -59,21 +104,182 @@ document.getElementById("g-back").onclick = function(){
     GAME.classList.add("hidden");
 };
 
+var minefield = null;
+
+//******
+// Click Action Control Section
+var mouse = [false, false, false]
+var clElem = null;
+var candidate = null;
+
+G_TABLE.onmousedown = function(e) {
+    clElem = e.target;
+    var b = e.button;
+    if (b < 3) {
+        mouse[b] = true;
+        
+        e.preventDefault();
+    }
+};
+
+G_TABLE.onmouseup = function(e) {
+    var b = e.button;
+    if (b < 3) {
+        // 
+        if (e.target === clElem) {
+            switch (b) {
+            case 0:
+                if (mouse[0]) {
+                    //minefield.clicked(clElem.data.col, clElem.parentNode.data.row);
+                }
+                break;
+            case 1:
+            case 2:
+            }
+        }
+        mouse[b] = false;
+        e.preventDefault();
+    }
+}
+
+// Cancel right click in the grid
+G_TABLE.oncontextmenu = function(e) {
+    // Cancel right click
+    e.preventDefault();
+}
+
+
+//******
+// Minefield control section
 function makeMineField(w, h, m) {
     // Clear the field
     G_TABLE.innerHTML = "";
     
     // Width first
     const H = document.createElement("tr");
-    for (var i = 0; i < w; i++)
-        H.appendChild(document.createElement("td"));
+    for (var i = 0; i < w; i++) {
+        var td = document.createElement("td");
+        td.classList.add("covered");
+        td.dataset.col = i;
+        H.appendChild(td);
+    }
     
     // Height
-    for (var i = 0; i < h; i++)
-        G_TABLE.appendChild(H.cloneNode(true));
+    for (var i = 0; i < h; i++) {
+        var tr = H.cloneNode(true);
+        tr.dataset.row = i;
+        G_TABLE.appendChild(tr);
+    }
+    
+    minefield = new Minefield(w, h, m);
 }
 
+function Minefield(width, height, mines) {
+    this.width = width;
+    this.height = height;
+    this.mines = mines;
+    this.field = [];
+    
+    // Make the land
+    for (var i = 0; i < height; i++) {
+        this.field[i] = [];
+        for (var j = 0; j < width; j++) {
+            this.field[i][j] = new Plot(j, i);
+        }
+    }
+    
+    // Each area will have an ID.
+    var area = width * height;
+    var safe = [];
+    for (var i = 0; i < area; i++) {
+        safe.push(i);
+    }
+    
+    // Install mines
+    for (var i = 0; i < mines; i++) {
+        var index = Math.floor(Math.random() * safe.length);
+        
+        // Mark this as a mine.
+        var x = index%this.width,
+            y = Math.floor(index/this.height);
+        this.field[y][x].type = -1;
+        
+        // Remove containing index from safe list
+        safe.splice(index, 1);
+        
+        // Increment surrounding
+        var neighs = this.neighbors(x, y);
+        for (var j = 0; j < neighs.length; j++) {
+            if (neighs[j].type !== -1) {
+                neighs[j].type++;
+            }
+        }
+    }
+    // test
+    this.showSolution();
+}
 
+Minefield.prototype.neighbors = function(x, y) {
+    // if it has room
+    var top = y > 0,
+        left = x > 0,
+        right = x < this.width - 1,
+        bottom = y < this.height - 1;
+    
+    var ret = [];
+    if (top) {
+        if (left) {
+            ret.push(this.field[y-1][x-1]);
+        }
+        ret.push(this.field[y-1][x]);
+        if (right) {
+            ret.push(this.field[y-1][x+1]);
+        }
+    }
+    if (left) {
+        ret.push(this.field[y][x-1]);
+    }
+    if (right) {
+        ret.push(this.field[y][x+1]);
+    }
+    if (bottom) {
+        if (left) {
+            ret.push(this.field[y+1][x-1]);
+        }
+        ret.push(this.field[y+1][x]);
+        if (right) {
+            ret.push(this.field[y+1][x+1]);
+        }
+    }
+    
+    return ret;
+}
+
+Minefield.prototype.stepOn = function(x, y) {
+    
+}
+
+Minefield.prototype.showSolution = function() {
+    for (var i = 0; i < this.height; i++) {
+        for (var j = 0; j < this.width; j++) {
+        	var type = this.field[i][j].type,
+            	node = G_TABLE.getElementsByTagName("tr")[i]
+            			.getElementsByTagName("td")[j];
+            node.innerHTML = type;
+            if (0 < type && type <= 8) {
+            	node.classList.add("n" + type);
+            }
+        }
+    }
+}
+
+function Plot(x, y) {
+    this.x = x;
+    this.y = y;
+    this.type = 0;
+}
+
+window.Minefield = Minefield;
 
 }())
 
