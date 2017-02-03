@@ -12,12 +12,13 @@
 }
 
 #g-main {
-  
+  border-collapse: collapse;
+  background-color: #bbb;
 }
 
-#g-minefield tr td {
+#g-minefield div {
+  box-sizing: border-box;
   border-style: none;
-  background-color: #c0c0c0;
   vertical-align: center;
   text-align: center;
   font-weight: bold;
@@ -25,41 +26,78 @@
   height: 1.5rem;
 }
 
-#g-minefield tr .covered {
-  border: .5rem outset #ffffff;
+#g-minefield div {
+  border-width: .2rem;
+  border-style: solid;
+  border-top-color: #fff;
+  border-left-color: #fff;
+  border-right-color: #777;
+  border-bottom-color: #777
 }
 
-#g-minefield tr .covered:active, #g-minefield tr .covered.active {
+#g-minefield div:active, #g-minefield div.active {
   border-style: inset;
 }
 
-#g-minefield tr .flagged {
+#g-minefield .flagged {
   /* flagged */
 }
 
-#g-minefield tr .n1{
-  color: #0000fc;
+#g-minefield td {
+  border: 1px solid #777;
+  padding: 0;
+  position: relative;
+  width: 1.5rem;
+  height: 1.5rem;
 }
-#g-minefield tr .n2{
-  color: #017f01;
+
+#g-minefield .nm:before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  text-align: center;
+  font-weight: bold;
+  line-height: 1.5em;
+  z-index: 1;
 }
-#g-minefield tr .n3{
-  color: #fe0000;
+
+#g-minefield .nm.n1:before {
+  content: "1";
+  color: #00f;
 }
-#g-minefield tr .n4{
-  color: #010080;
+#g-minefield .nm.n2:before {
+  content: "2";
+  color: #070;
 }
-#g-minefield tr .n5{
-  color: #810102;
+#g-minefield .nm.n3:before {
+  content: "3";
+  color: #f00;
 }
-#g-minefield tr .n6{
-  color: #008081;
+#g-minefield .nm.n4:before{
+  content: "4";
+  color: #007;
 }
-#g-minefield tr .n7{
-  color: #000000;
+#g-minefield .nm.n5:before {
+  content: "5";
+  color: #700;
 }
-#g-minefield tr .n8{
-  color: #808080;
+#g-minefield .nm.n6:before {
+  content: "6";
+  color: #077;
+}
+#g-minefield .nm.n7:before {
+  content: "7";
+  color: #000;
+}
+#g-minefield .nm.n8:before {
+  content: "8";
+  color: #777;
+}
+#g-minefield .nm.nb:before {
+  content: "X";
+  color: #777;
 }
 
     </style>
@@ -123,6 +161,14 @@ G_TABLE.onmousedown = function(e) {
 };
 
 G_TABLE.onmouseup = function(e) {
+    var clElem = e.target;
+    if (clElem.tagName !== "TD") {
+        clElem = clElem.parentNode; // TODO: Fix this Broken code
+        if (clElem.tagName !== "TD")
+            return;
+    }
+    console.log("through");
+    console.log(clElem);
     var b = e.button;
     if (b < 3) {
         // 
@@ -130,7 +176,7 @@ G_TABLE.onmouseup = function(e) {
             switch (b) {
             case 0:
                 if (mouse[0]) {
-                    //minefield.clicked(clElem.data.col, clElem.parentNode.data.row);
+                    minefield.click(parseInt(clElem.dataset.col), parseInt(clElem.parentNode.dataset.row));
                 }
                 break;
             case 1:
@@ -159,7 +205,9 @@ function makeMineField(w, h, m) {
     const H = document.createElement("tr");
     for (var i = 0; i < w; i++) {
         var td = document.createElement("td");
-        td.classList.add("covered");
+        var d = document.createElement("div");
+        d.classList.add("covered")
+        td.appendChild(d);
         td.dataset.col = i;
         H.appendChild(td);
     }
@@ -171,20 +219,34 @@ function makeMineField(w, h, m) {
         G_TABLE.appendChild(tr);
     }
     
-    minefield = new Minefield(w, h, m);
+    minefield = new Minefield(G_TABLE, m);
 }
 
-function Minefield(width, height, mines) {
-    this.width = width;
-    this.height = height;
+
+//******
+// Minefield Class
+function Minefield(domField, mines) {
+    var domCols = domField.getElementsByTagName("tr");
+    var height = this.width = domCols.length;
+    if (height <= 0) {
+        console.log("Zero Height");
+        return;
+    }
+    var width = this.height = domCols[0].getElementsByTagName("td").length;
+    if (width <= 0) {
+        console.log("Zero Width");
+        return;
+    }
+
     this.mines = mines;
     this.field = [];
     
     // Make the land
     for (var i = 0; i < height; i++) {
         this.field[i] = [];
+        var domRows = domCols[i].getElementsByTagName("td");
         for (var j = 0; j < width; j++) {
-            this.field[i][j] = new Plot(j, i);
+            this.field[i][j] = new Plot(j, i, domRows[j]);
         }
     }
     
@@ -200,26 +262,24 @@ function Minefield(width, height, mines) {
         var index = Math.floor(Math.random() * safe.length);
         
         // Mark this as a mine.
-        var x = index%this.width,
-            y = Math.floor(index/this.height);
+        var x = safe[index] % this.width,
+            y = Math.floor( safe[index] / this.height );
         this.field[y][x].type = -1;
         
         // Remove containing index from safe list
         safe.splice(index, 1);
         
         // Increment surrounding
-        var neighs = this.neighbors(x, y);
+        var neighs = this.getNeighbors(x, y);
         for (var j = 0; j < neighs.length; j++) {
             if (neighs[j].type !== -1) {
                 neighs[j].type++;
             }
         }
     }
-    // test
-    this.showSolution();
 }
 
-Minefield.prototype.neighbors = function(x, y) {
+Minefield.prototype.getNeighbors = function(x, y) {
     // if it has room
     var top = y > 0,
         left = x > 0,
@@ -255,28 +315,49 @@ Minefield.prototype.neighbors = function(x, y) {
     return ret;
 }
 
-Minefield.prototype.stepOn = function(x, y) {
-    
+Minefield.prototype.click = function(x, y) {
+    console.log("Click registered");
+    switch(this.field[y][x].type) {
+    case 0:
+        // Expand
+        // Class to note: .covered
+        var neighs = this.getNeighbors(x, y);
+        for (var i = 0; i < neighs.length; i++) {
+            if (neighs[i].dom.childElementCount === 1) {
+                this.click(neighs[i].x, neighs[i].y);
+            }
+        }
+        // No break
+    default:
+        // remove cover
+        this.field[y][x].dom.innerHTML = "";
+    }
 }
 
 Minefield.prototype.showSolution = function() {
     for (var i = 0; i < this.height; i++) {
         for (var j = 0; j < this.width; j++) {
-        	var type = this.field[i][j].type,
-            	node = G_TABLE.getElementsByTagName("tr")[i]
-            			.getElementsByTagName("td")[j];
-            node.innerHTML = type;
+            var type = this.field[i][j].type,
+                node = G_TABLE.getElementsByTagName("tr")[i]
+                        .getElementsByTagName("td")[j],
+                d;
+            if (0 <= type && type <= 8 && node.getElementsByTagName("div").length !== 0) {
+                node.innerHTML = "";
+            }
             if (0 < type && type <= 8) {
-            	node.classList.add("n" + type);
+                node.classList.add("nm", "n" + type);
+            } else if (type == -1) {
+                node.classList.add("nm", "nb");
             }
         }
     }
 }
 
-function Plot(x, y) {
+function Plot(x, y, dom) {
     this.x = x;
     this.y = y;
     this.type = 0;
+    this.dom = dom;
 }
 
 window.Minefield = Minefield;
