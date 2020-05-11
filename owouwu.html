@@ -1,0 +1,128 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="owo? uwu!">
+    <link rel="stylesheet" type="text/css" href="res/css/main.css">
+    <title>owo? uwu!</title>
+    <style>
+#timeContainer {
+  border-radius: 1em;
+  border: 2px solid #fff;
+  text-align: center;
+  padding: .5em;
+  font-size: 4em;
+  margin: 0 auto;
+  max-width: 1024px;
+}
+
+#input-txt {
+  color: white;
+  background-color: black;
+}
+
+@media (max-width: 480px) {
+  #timeContainer{
+    font-size: 2em;
+  }
+}
+    </style>
+  </head>
+  <body>
+    <div id="timeContainer">
+      <form id="input-form">
+        <textarea id="input-txt"></textarea>
+        <input type="submit" value="owoify [close()]">
+        <input type="submit" value="uwuify [open()]">
+      </form>
+    </div>
+    <div id="io-navbar"><a href="/">Home</a> &bull; <a href="//github.com/SimonOrJ/simonorj.github.io/blob/master/clock.html">Source</a></div>
+    <script>
+const owouwuBox = document.getElementById("input-txt");
+document.getElementById("input-form").onsubmit = function (e) {
+    e.preventDefault();
+    if (e.submitter.value === "owoify [close()]")
+      owouwuBox.value = close(owouwuBox.value);
+    else
+      owouwuBox.value = open(owouwuBox.value);
+}
+
+
+function open(_owo_) {
+    const owo = _owo_.toLowerCase();
+    let uwu = "";
+    
+    for (let i = 0; i < owo.length; i++) {
+        const u = owo.charAt(i);
+        switch (u) {
+            case 'a':
+                uwu += 'u';
+                break;
+            case 'b':
+                uwu += 'h';
+                break;
+            case 'd':
+                uwu += 'u';
+                break;
+            case 'e':
+                uwu += 'm';
+                break;
+            case 'o':
+                uwu += 'u';
+                break;
+            case 'p':
+                uwu += 'n';
+                break;
+            case 'q':
+                uwu += 'u';
+                break;
+            case 'r':
+                uwu += 'v';
+                break;
+            default:
+                uwu += u;
+        }
+    }
+    
+    return uwu;
+}
+
+function close(_uwu_) {
+    const uwu = _uwu_.toLowerCase();
+    let owo = "";
+    
+    for (let i = 0; i < uwu.length; i++) {
+        const o = uwu.charAt(i);
+        switch (o) {
+            case 'c':
+                owo += 'o';
+                break;
+            case 'h':
+                owo += 'b';
+                break;
+            case 'm':
+                owo += 'e';
+                break;
+            case 'n':
+                owo += 'p';
+                break;
+            case 'r':
+                owo += 'p';
+                break;
+            case 'u':
+                owo += 'o';
+                break;
+            case 'v':
+                owo += 'r';
+                break;
+            default:
+                owo += o;
+        }
+    }
+    
+    return owo;
+}
+    </script>
+  </body>
+</html>
